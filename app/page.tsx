@@ -1,7 +1,12 @@
 import Link from "next/link";
+import prisma from '@/lib/prisma';
 
-export default function Page() {
-  return <Link href='/overview'>
-    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"> Overview </button>
-  </Link>;
+export default async function Page() {
+  const users = await prisma.user.findMany();
+
+  return users.map((user) => (
+    <Link href={`/overview/${user.id}`} key={user.id}>
+      {user.name}
+    </Link>
+  ));
 }
