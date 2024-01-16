@@ -21,3 +21,11 @@ export async function parseData() {
         return [];
     }
 }
+
+
+// export const addKeyword = async (data: FormData) => {
+//     const keyword = data.get('keyword') as string;
+//     await prisma.user.create({ data: { keyword } });
+//     revalidatePath('/');
+//     redirect('/');
+// };

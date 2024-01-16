@@ -11,7 +11,15 @@ datasource db {
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
+  id       Int       @id @default(autoincrement())
+  name     String
+  email    String    @unique
+  keywords Keyword[]
+}
+
+model Keyword {
+  id     Int    @id @default(autoincrement())
+  userId Int
+  name   String @unique
+  user   User   @relation(fields: [userId], references: [id])
 }
