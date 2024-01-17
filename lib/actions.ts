@@ -26,16 +26,13 @@ export async function parseData() {
 }
 
 
-export const addKeyword = async (data: FormData) => {
+export const addKeyword = async (userId: number, data: FormData) => {
     const keyword = data.get('addKeyword') as string;
-    // KeywordCreateInput型でデータを作成
     const keywordData = {
-        userId: 1, // ユーザーIDを指定する
+        userId: userId,
         name: keyword,
-        // 他の必要なプロパティがあればここで追加
     };
 
-    // Prismaのcreateメソッドに正しい型でデータを渡す
     await prisma.keyword.create({ data: keywordData });
 
     revalidatePath('/');

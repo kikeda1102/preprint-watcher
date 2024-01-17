@@ -5,13 +5,15 @@ import { addKeyword } from '@/lib/actions';
 export default async function Page({ params }: { params: { id: string } }) {
     const userId = parseInt(params.id, 10);
 
+    const addKeywordWithId = addKeyword.bind(null, userId)
+
     return (
         <main>
             <h1>Overview</h1>
             <p>Viewing user {userId}</p>
 
             <form className="flex items-center"
-                action={addKeyword}
+                action={addKeywordWithId}
             >
                 <label htmlFor="addKeyword" className="text-sm font-bold m-2">
                     Add Keyword
