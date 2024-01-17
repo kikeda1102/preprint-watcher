@@ -8,6 +8,7 @@ const AddKeywordForm = ({ userId }: { userId: number }) => {
     const ref = useRef<HTMLFormElement>(null)
 
     return (
+        // TODO: validation エラーハンドリング
         <form className="flex items-center"
             ref={ref}
             action={async (formData) => {
@@ -28,7 +29,7 @@ const AddKeywordForm = ({ userId }: { userId: number }) => {
                 type="submit"
                 className="bg-blue-600 text-white rounded-lg py-2 px-4 m-2 text-sm hover:bg-blue-700"
             >
-                Add Keyword
+                ＋
             </button>
         </form>
     );

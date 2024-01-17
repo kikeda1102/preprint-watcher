@@ -17,13 +17,13 @@ export default async function Page({ params }: { params: { id: string } }) {
     }
 
     return (
-        <main>
-            <h1>Overview</h1>
+        <main className="my-8 mx-auto max-w-2xl">
+            <h1 className="text-3xl font-bold mb-4">Overview</h1>
 
-            <div style={{ fontWeight: 'bold' }}>{user.name}</div>
-            {user.keywords.map((keyword, index) => (
-                <div key={keyword.id} style={{ display: 'flex', alignItems: 'center' }}>
-                    <span style={{ marginRight: '8px' }}>{keyword.name}</span>
+            <div className="font-bold mb-2 ml-2">{user.name}</div>
+            {user.keywords.map((keyword) => (
+                <div key={keyword.id} className="flex items-center mb-2">
+                    <span className="mr-2 ml-2">{keyword.name}</span>
                     <DeleteButton keywordId={keyword.id} />
                 </div>
             ))}
@@ -32,8 +32,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
             {await searchResult()}
 
-            <p> TODO: 登録済みのキーワード一覧を表示 </p>
-            <Link href={`/`} className="bg-blue-600 px-2 py-1 rounded-lg text-sm text-white">
+            <Link href={`/`} className="bg-blue-600 px-4 py-2 m-4 rounded-lg text-sm text-white">
                 Back
             </Link>
         </main>

@@ -13,7 +13,7 @@ export default async function searchResult() {
     // 検索結果を表示
     return (
         <>
-            <div>
+            <div className="font-bold m-2">
                 found {entries.length} papers.
             </div>
 

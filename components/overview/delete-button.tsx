@@ -5,7 +5,7 @@ const DeleteButton = ({ keywordId }: { keywordId: number }) => {
 
     return (
         <form action={deleteTodoWithId}>
-            <button className="bg-red-500 px-2 py-1 rounded-lg text-sm text-white">
+            <button className="bg-red-500 px-1.5 py-0.5 rounded-xl text-sm text-white">
                 ×
             </button>
         </form>
