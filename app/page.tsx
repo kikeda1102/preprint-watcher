@@ -9,7 +9,7 @@ export default async function Page() {
       <div style={{ fontWeight: 'bold' }}>{user.name}</div>
       {user.keywords.map((keyword, index) => (
         <span key={keyword.id}>
-          {index > 0 && ', '}
+          {index > 0 && ' '}
           {keyword.name}
         </span>
       ))}

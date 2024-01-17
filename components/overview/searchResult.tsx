@@ -1,8 +1,8 @@
-import { parseData } from '@/lib/actions';
+import { parseArxivData } from '@/lib/actions';
 
 export default async function searchResult() {
 
-    const entries = await parseData();
+    const entries = await parseArxivData();
 
     function formatDate(dateString: string): string {
         const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };

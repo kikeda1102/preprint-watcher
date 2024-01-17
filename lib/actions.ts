@@ -3,17 +3,18 @@ import { XMLParser } from 'fast-xml-parser';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-
-async function fetchData() {
+/** Arxiv APIによるデータ取得 */
+async function fetchArxivData() {
     const url = 'http://export.arxiv.org/api/query?search_query=all:electron&start=0&max_results=2';
     const response = await fetch(url);
     const data = await response.status === 200 ? response.text() : 'error fetching data';
     return data;
 }
 
-export async function parseData() {
+/** Arxiv APIから取得したデータをパース */
+export async function parseArxivData() {
     try {
-        const data = await fetchData();
+        const data = await fetchArxivData();
         const parser = new XMLParser();
         const jsonData = parser.parse(data);
         const entries = jsonData.feed.entry || [];
@@ -25,7 +26,7 @@ export async function parseData() {
     }
 }
 
-
+/** キーワードをCreate */
 export const addKeyword = async (userId: number, data: FormData) => {
     const keyword = data.get('addKeyword') as string;
     const keywordData = {
@@ -36,5 +37,15 @@ export const addKeyword = async (userId: number, data: FormData) => {
     await prisma.keyword.create({ data: keywordData });
 
     revalidatePath('/');
-    redirect('/');
+    // redirect('/');
+};
+
+/** キーワードをDelete */
+export const deleteKeyword = async (keywordId: number) => {
+    await prisma.keyword.delete({
+        where: {
+            id: keywordId,
+        },
+    });
+    revalidatePath('/');
 };

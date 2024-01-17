@@ -1,36 +1,35 @@
 import Link from 'next/link';
+import AddKeywordForm from '@/components/overview/add-keyword-form';
+import DeleteButton from '@/components/overview/delete-button';
 import searchResult from '@/components/overview/searchResult';
-import { addKeyword } from '@/lib/actions';
+
 
 export default async function Page({ params }: { params: { id: string } }) {
     const userId = parseInt(params.id, 10);
+    const user = await prisma.user.findUnique({
+        where: { id: userId },
+        include: { keywords: true },
+    });
 
-    const addKeywordWithId = addKeyword.bind(null, userId)
+
+    if (!user) {
+        return <div>User Not Found.</div>;
+    }
 
     return (
         <main>
             <h1>Overview</h1>
-            <p>Viewing user {userId}</p>
 
-            <form className="flex items-center"
-                action={addKeywordWithId}
-            >
-                <label htmlFor="addKeyword" className="text-sm font-bold m-2">
-                    Add Keyword
-                </label>
-                <input
-                    id="addKeyword"
-                    name="addKeyword"
-                    type="text"
-                    className="border border-gray-300 p-2 m-2 rounded-lg appearance-none focus:outline-none focus:border-gray-600"
-                />
-                <button
-                    type="submit"
-                    className="bg-blue-600 text-white rounded-lg py-2 px-4 m-2 text-sm hover:bg-blue-700"
-                >
-                    Add Keyword
-                </button>
-            </form>
+            <div style={{ fontWeight: 'bold' }}>{user.name}</div>
+            {user.keywords.map((keyword, index) => (
+                <div key={keyword.id} style={{ display: 'flex', alignItems: 'center' }}>
+                    <span style={{ marginRight: '8px' }}>{keyword.name}</span>
+                    <DeleteButton keywordId={keyword.id} />
+                </div>
+            ))}
+
+            <AddKeywordForm userId={userId} />
+
             {await searchResult()}
 
             <p> TODO: 登録済みのキーワード一覧を表示 </p>
