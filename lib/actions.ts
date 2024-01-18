@@ -5,23 +5,24 @@ import { redirect } from 'next/navigation';
 
 /** キーワードからクエリを作成 */
 export const createQuery = (keywords: string[]) => {
-    const query = keywords.join('+OR+');
-    return query;
+    const baseUrl = 'http://export.arxiv.org/api/query';
+    const queryUrl = baseUrl + '?search_query=' + keywords.join('+OR+');
+    return queryUrl;
 };
 
 
 /** データ取得 */
-async function fetchArxivData() {
-    const url = 'http://export.arxiv.org/api/query?search_query=all:electron&start=0&max_results=7';
-    const response = await fetch(url);
+async function fetchArxivData(keywords: string[]) {
+    const queryUrl = createQuery(keywords);
+    const response = await fetch(queryUrl);
     const data = await response.status === 200 ? response.text() : 'error fetching data';
     return data;
 }
 
 /** Arxiv APIから取得したデータをパース */
-export async function parseArxivData() {
+export async function parseArxivData(keywords: string[]) {
     try {
-        const data = await fetchArxivData();
+        const data = await fetchArxivData(keywords);
         const parser = new XMLParser();
         const jsonData = parser.parse(data);
         const entries = jsonData.feed.entry || [];

@@ -30,7 +30,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
             <AddKeywordForm userId={userId} />
 
-            {await searchResult()}
+            {await searchResult(user.keywords.map((keyword) => keyword.name))}
 
             <Link href={`/`} className="bg-blue-600 px-4 py-2 m-4 rounded-lg text-sm text-white">
                 Back
