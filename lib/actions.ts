@@ -3,9 +3,16 @@ import { XMLParser } from 'fast-xml-parser';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-/** Arxiv APIによるデータ取得 */
+/** キーワードからクエリを作成 */
+export const createQuery = (keywords: string[]) => {
+    const query = keywords.join('+OR+');
+    return query;
+};
+
+
+/** データ取得 */
 async function fetchArxivData() {
-    const url = 'http://export.arxiv.org/api/query?search_query=all:electron&start=0&max_results=2';
+    const url = 'http://export.arxiv.org/api/query?search_query=all:electron&start=0&max_results=7';
     const response = await fetch(url);
     const data = await response.status === 200 ? response.text() : 'error fetching data';
     return data;

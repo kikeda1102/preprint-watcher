@@ -25,12 +25,21 @@ export default async function searchResult() {
                     </a>
                     <h1 className="text-2xl font-bold mb-2">{entry.title}</h1>
                     <p className="text-sm mb-2">{formatDate(entry.published)}</p>
-                    {entry.author.map((person: any, index: number) => (
-                        <span key={person.name} className="text-xl">
-                            {person.name}
-                            {index < entry.author.length - 1 && ', '}
-                        </span>
-                    ))}
+                    {
+                        // 著者が複数の場合と単数の場合で型が違うため場合分けが必要
+                        Array.isArray(entry.author) ? (
+                            entry.author.map((person: any, index: number) => (
+                                <span key={person.name} className="text-xl">
+                                    {person.name}
+                                    {index < entry.author.length - 1 && ', '}
+                                </span>
+                            ))
+                        ) : (
+                            <span className="text-xl">
+                                {entry.author.name}
+                            </span>
+                        )
+                    }
                     <div>
 
                         {entry.summary.length > 200
