@@ -13,6 +13,7 @@ arXiv を毎日全部見るのは大変なので、興味のあるキーワー�
 
 ## 構成
 
+```
 .
 ├── app: ホームページ
 │ ├── login: ログイン画面(未作成)
@@ -20,6 +21,6 @@ arXiv を毎日全部見るのは大変なので、興味のあるキーワー�
 ├── components: UI 要素を置く場所
 ├── lib
 │ ├── actions.ts: DB 操作、API
-│ └──prisma.ts: prisma Client の作成
-├──
-└──
+│ └── prisma.ts: prisma Client の作成
+├── ...
+```
