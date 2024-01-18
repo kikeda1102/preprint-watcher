@@ -5,11 +5,19 @@
 
 arXiv を毎日全部見るのは大変なので、興味のあるキーワードだけチェックできる
 
-## 仕様
+## 要件
 
 ユーザは認証してログイン
 ユーザーがログインするたびに検索実行
 結果を表示
+
+## 技術
+
+Framework: Next.js
+DB: SQLite
+OR Mapper: Prisma
+
+[arXiv API](https://info.arxiv.org/help/api/index.html)でデータ取得
 
 ## 構成
 
