@@ -16,7 +16,7 @@ export default async function searchResult(keywords: string[]) {
             {entries.length > 0 ? (
                 <>
                     <div className="font-bold m-4">
-                        found {entries.length} papers.
+                        {entries.length} papers found.
                     </div>
 
                     {entries.map((entry: any) => (
@@ -40,7 +40,7 @@ export default async function searchResult(keywords: string[]) {
                             )}
                             <div>
                                 {entry.summary.length > 200
-                                    ? entry.summary.slice(0, 500) + '...'
+                                    ? entry.summary.slice(0, 200) + '...'
                                     : entry.summary
                                 }
                             </div>
