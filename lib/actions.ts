@@ -44,9 +44,27 @@ export const addKeyword = async (userId: number, data: FormData) => {
 
     await prisma.keyword.create({ data: keywordData });
 
-    revalidatePath('/');
+    revalidatePath(`/overview/${userId}`);
     // redirect('/');
 };
+
+/** キーワードをEdit */
+export const editKeyword = async (keywordId: number, keyword: string) => {
+    const keywordData = {
+        id: keywordId,
+        name: keyword,
+    };
+
+    await prisma.keyword.update({
+        where: {
+            id: keywordId,
+        },
+        data: keywordData,
+    });
+
+    revalidatePath('/');
+};
+
 
 /** キーワードをDelete */
 export const deleteKeyword = async (keywordId: number) => {
