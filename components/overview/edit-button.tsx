@@ -29,9 +29,13 @@ const EditButton = ({ keywordId, currentKeyword }: { keywordId: number; currentK
 
     return (
         <>
-            <button onClick={openModal} className="bg-blue-500 px-2 py-1 m-1 rounded text-sm text-white">
+            <button
+                onClick={openModal}
+                className="bg-blue-500 hover:bg-blue-600 focus:outline-none px-3 py-2 m-1 rounded text-sm text-white transition-all duration-300"
+            >
                 <Edit size={14} />
             </button>
+
 
             <Modal
                 isOpen={isModalOpen}

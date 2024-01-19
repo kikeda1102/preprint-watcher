@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                     <span className="text-lg font-semibold">{keyword.name}</span>
                     <div className="flex space-x-2">
                         <EditButton keywordId={keyword.id} currentKeyword={keyword.name} />
-                        <DeleteButton keywordId={keyword.id} />
+                        <DeleteButton keywordName={keyword.name} keywordId={keyword.id} />
                     </div>
                 </div>
             ))}
