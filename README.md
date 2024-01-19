@@ -29,7 +29,7 @@ OR Mapper: Prisma
 .
 ├── app: ホームページ
 │ ├── login: ログイン画面(未作成)
-│ └── overview: 各ユーザーのページ
+│ └── dashboard: 各ユーザーのページ
 ├── components: UI 要素を置く場所
 ├── lib
 │ ├── actions.ts: DB 操作、API
