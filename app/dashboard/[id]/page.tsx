@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import AddKeywordForm from '@/components/overview/add-keyword-form';
-import DeleteButton from '@/components/overview/delete-button';
-import EditButton from '@/components/overview/edit-button';
-import searchResult from '@/components/overview/searchResult';
+import AddKeywordForm from '@/components/dashboard/add-keyword-form';
+import DeleteButton from '@/components/dashboard/delete-button';
+import EditButton from '@/components/dashboard/edit-button';
+import searchResult from '@/components/dashboard/searchResult';
 
 export default async function Page({ params }: { params: { id: string } }) {
     const userId = parseInt(params.id, 10);
@@ -17,7 +17,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
     return (
         <main className="my-8 mx-auto max-w-2xl">
-            <div className="text-3xl font-bold mb-4 ml-2">{user.name} 's dashboard</div>
+            <div className="text-3xl font-bold mb-4 ml-2">{user.name} &#39;s dashboard</div>
             <div className="flex flex-wrap items-start mb-4 ml-2">
                 <span className="text-lg font-semibold mr-3 mt-3">Keywords:</span>
                 {user.keywords.map((keyword) => (

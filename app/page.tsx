@@ -7,7 +7,7 @@ export default async function Page() {
   return (
     <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {users.map((user) => (
-        <Link href={`/overview/${user.id}`} key={user.id}>
+        <Link href={`/dashboard/${user.id}`} key={user.id}>
           <div className="bg-white p-4 rounded-md shadow-md m-5 cursor-pointer">
             <h2 className="text-xl font-bold mb-2">{user.name}</h2>
             <div className="flex flex-wrap">
