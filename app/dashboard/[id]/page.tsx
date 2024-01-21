@@ -31,8 +31,6 @@ export default async function Page({ params }: { params: { id: string } }) {
                 ))}
             </div>
 
-
-
             <AddKeywordForm userId={userId} />
 
             {await searchResult(user.keywords.map((keyword) => keyword.name))}
