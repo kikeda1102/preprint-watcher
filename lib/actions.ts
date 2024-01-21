@@ -2,6 +2,7 @@
 import { XMLParser } from 'fast-xml-parser';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { z } from 'zod';
 
 /** キーワードからクエリを作成 */
 export const createQuery = (keywords: string[]) => {
@@ -34,18 +35,47 @@ export async function parseArxivData(keywords: string[]) {
     }
 }
 
+// zod schema
+const FormSchema = z.object({
+    name: z.string().min(1, { message: 'キーワードを入力してください' }),
+})
+
+export type State = {
+    errors?: {
+        name?: string[];
+    };
+    message?: string | null;
+};
+
 /** キーワードをCreate */
-export const addKeyword = async (userId: number, data: FormData) => {
-    const keyword = data.get('addKeyword') as string;
+export async function addKeyword(userId: number, prevState: State, formData: FormData) {
+    const validatedField = FormSchema.safeParse({
+        name: formData.get('addKeyword'),
+    });
+
+    if (!validatedField.success) {
+        return {
+            errors: validatedField.error.flatten().fieldErrors,
+            message: 'Failed to add keyword',
+        };
+    }
+
+    // Prepare data for insertion into DB
     const keywordData = {
         userId: userId,
-        name: keyword,
+        name: validatedField.data.name,
     };
 
-    await prisma.keyword.create({ data: keywordData });
-
-    revalidatePath(`/overview/${userId}`);
-    // redirect('/');
+    // Insert data into
+    try {
+        await prisma.keyword.create({ data: keywordData });
+    } catch (error) {
+        return {
+            message: 'Failed to add keyword',
+        };
+    }
+    revalidatePath(`/dashboard/${userId}`);
+    redirect(`/dashboard/${userId}`);
 };
 
 /** キーワードをEdit */
