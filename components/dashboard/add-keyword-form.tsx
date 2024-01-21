@@ -16,37 +16,33 @@ const AddKeywordForm = ({ userId }: { userId: number }) => {
         // TODO: validation エラーハンドリング
         <form className="flex items-center"
             ref={ref}
-            action={
-                // async (formData) => {
-                // await addKeywordWithId(formData)
-                // ref.current?.reset();
-                // }
-                dispatch
-            }
+            action={dispatch}
         >
-            <label htmlFor="addKeyword" className="text-sm font-bold m-2">
-                Add Keyword
-            </label>
-            <input
-                id="addKeyword"
-                name="addKeyword"
-                type="text"
-                className="border border-gray-300 p-2 m-2 rounded-lg appearance-none focus:outline-none focus:border-gray-600"
-            />
-            <div id="name-error" aria-live="polite" aria-atomic="true">
-                {state?.errors?.name &&
-                    state?.errors.name.map((error: string) => (
-                        <p className="mt-2 text-sm text-red-500" key={error}>
-                            {error}
-                        </p>
-                    ))}
+            <div className="flex flex-col">
+                <div className="flex items-center">
+                    <input
+                        id="addKeyword"
+                        name="addKeyword"
+                        type="text"
+                        className="border border-gray-300 p-2 m-2 rounded-lg appearance-none focus:outline-none focus:border-gray-600"
+                    />
+                    <button
+                        type="submit"
+                        className="bg-blue-600 text-white rounded-lg py-2 px-4 m-2 text-sm hover:bg-blue-700"
+                    >
+                        Add Keyword
+                    </button>
+                </div>
+                <div id="name-error" aria-live="polite" aria-atomic="true">
+                    {state?.errors?.name &&
+                        state?.errors.name.map((error: string) => (
+                            <p className="mt-2 text-sm text-red-500" key={error}>
+                                {error}
+                            </p>
+                        ))}
+                </div>
             </div>
-            <button
-                type="submit"
-                className="bg-blue-600 text-white rounded-lg py-2 px-4 m-2 text-sm hover:bg-blue-700"
-            >
-                ＋
-            </button>
+
         </form>
     );
 }
