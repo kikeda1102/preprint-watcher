@@ -8,15 +8,23 @@ import { State } from '@/lib/actions';
 
 const AddKeywordForm = ({ userId }: { userId: number }) => {
     const addKeywordWithId = addKeyword.bind(null, userId);
-    const ref = useRef<HTMLFormElement>(null) // フォームのリセット用にrefを設定
+    const formRef = useRef<HTMLFormElement>(null) // フォームのリセット用にrefを設定
     const initialState: State = { message: null, errors: {} };
     const [state, dispatch] = useFormState(addKeywordWithId, initialState);
+
+    const handleDispatch = async (formData: FormData) => {
+        // フォームの処理を行う
+        await dispatch(formData);
+
+        // フォームをリセット
+        formRef.current?.reset();
+    };
 
     return (
         // TODO: validation エラーハンドリング
         <form className="flex items-center"
-            ref={ref}
-            action={dispatch}
+            ref={formRef}
+            action={handleDispatch}
         >
             <div className="flex flex-col">
                 <div className="flex items-center">
