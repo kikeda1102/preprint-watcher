@@ -20,6 +20,8 @@ model User {
 model Keyword {
   id     Int    @id @default(autoincrement())
   userId Int
-  name   String @unique
+  name   String
   user   User   @relation(fields: [userId], references: [id])
+
+  @@unique([userId, name])
 }
