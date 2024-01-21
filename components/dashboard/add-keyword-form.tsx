@@ -1,28 +1,47 @@
 'use client';
 import { addKeyword } from '@/lib/actions';
-import { init } from 'next/dist/compiled/webpack/webpack';
-import { useRef } from 'react'
+import { useRef } from 'react';
 import { useFormState } from 'react-dom';
 import { State } from '@/lib/actions';
+import React, { useState } from 'react';
+import { Prisma } from '@prisma/client';
 
 
 const AddKeywordForm = ({ userId }: { userId: number }) => {
     const addKeywordWithId = addKeyword.bind(null, userId);
-    const formRef = useRef<HTMLFormElement>(null) // フォームのリセット用にrefを設定
+    const formRef = useRef<HTMLFormElement>(null); // フォームのリセット用にrefを設定
     const initialState: State = { message: null, errors: {} };
     const [state, dispatch] = useFormState(addKeywordWithId, initialState);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleDispatch = async (formData: FormData) => {
-        // フォームの処理を行う
-        await dispatch(formData);
-
-        // フォームをリセット
-        formRef.current?.reset();
+        try {
+            // フォームの処理を行う
+            await dispatch(formData);
+            // フォームをリセット
+            formRef.current?.reset();
+        } catch (error) {
+            if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                // エラーがPrismaのエラーの場合
+                if (error.code === 'P2002') {
+                    // 一意制約違反の場合、エラーメッセージを表示する
+                    setErrorMessage('The keyword already exists.');
+                } else {
+                    // それ以外のエラーの場合、未知のエラーとして扱う
+                    console.error('Unknown error:', error);
+                    setErrorMessage('An unknown error occurred.');
+                }
+            } else {
+                // それ以外のエラーの場合、未知のエラーとして扱う
+                console.error('Unknown error:', error);
+                setErrorMessage('An unknown error occurred.');
+            }
+        }
     };
 
     return (
-        // TODO: validation エラーハンドリング
-        <form className="flex items-center"
+        <form
+            className="flex items-center"
             ref={formRef}
             action={handleDispatch}
         >
@@ -48,11 +67,14 @@ const AddKeywordForm = ({ userId }: { userId: number }) => {
                                 {error}
                             </p>
                         ))}
+                    {errorMessage && (
+                        <p className="mt-2 text-sm text-red-500">{errorMessage}</p>
+                    )
+                    }
                 </div>
             </div>
-
         </form>
     );
-}
+};
 
 export default AddKeywordForm;

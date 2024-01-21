@@ -3,6 +3,7 @@ import { XMLParser } from 'fast-xml-parser';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import { Prisma } from '@prisma/client';
 
 /** キーワードからクエリを作成 */
 export const createQuery = (keywords: string[]) => {
@@ -68,11 +69,34 @@ export async function addKeyword(userId: number, prevState: State, formData: For
 
     // Insert data into
     try {
-        await prisma.keyword.create({ data: keywordData });
+        const result = await prisma.keyword.create({ data: keywordData });
+        console.log(result);
+
     } catch (error) {
-        return {
-            message: 'Failed to add keyword',
-        };
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            if (error.code === 'P2002') {
+                return {
+                    errors: {
+                        name: ['キーワードが重複しています'],
+                    },
+                    message: 'Failed to add keyword',
+                }
+            } else {
+                return {
+                    errors: {
+                        name: ['予期しないエラーが発生しました'],
+                    },
+                    message: 'Failed to add keyword',
+                }
+            }
+        } else {
+            return {
+                errors: {
+                    name: ['予期しないエラーが発生しました'],
+                },
+                message: 'Failed to add keyword',
+            }
+        }
     }
     revalidatePath(`/dashboard/${userId}`);
     redirect(`/dashboard/${userId}`);
