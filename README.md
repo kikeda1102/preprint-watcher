@@ -33,6 +33,7 @@ OR Mapper: Prisma
 ├── components: UI 要素を置く場所
 ├── lib
 │ ├── actions.ts: DB 操作、API
+│ ├── search-query.ts: 検索クエリを規定するSearchQueryクラスの定義
 │ └── prisma.ts: prisma Client の作成
 ├── ...
 ```

@@ -1,8 +1,10 @@
 import { parseArxivData } from '@/lib/actions';
 import Link from 'next/link';
+import { SearchQuery } from '@/lib/search-query';
 
-export default async function searchResult(keywords: string[]) {
-    const entries = await parseArxivData(keywords);
+
+export default async function searchResult(searchQuery: SearchQuery) {
+    const entries = await parseArxivData(searchQuery);
 
     function formatDate(dateString: string): string {
         const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };

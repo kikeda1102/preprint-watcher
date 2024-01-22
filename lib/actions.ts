@@ -4,37 +4,40 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { Prisma } from '@prisma/client';
+import { SearchQuery } from '@/lib/search-query';
 
-/** キーワードからクエリを作成 */
-export const createQuery = (keywords: string[]) => {
-    const baseUrl = 'http://export.arxiv.org/api/query';
-    const queryUrl = baseUrl + '?search_query=' + keywords.join('+OR+');
-    return queryUrl;
-};
 
 
 /** データ取得 */
-async function fetchArxivData(keywords: string[]) {
-    const queryUrl = createQuery(keywords);
+async function fetchArxivData(query: SearchQuery) {
+    const queryUrl = query.getQueryUrl();
     const response = await fetch(queryUrl);
-    const data = await response.status === 200 ? response.text() : 'error fetching data';
+
+    if (!response.ok) {
+        console.log(`queryUrl: ${queryUrl}`);
+        throw new Error('Error fetching data');
+    }
+
+    const data = await response.text();
     return data;
 }
 
 /** Arxiv APIから取得したデータをパース */
-export async function parseArxivData(keywords: string[]) {
+export async function parseArxivData(query: SearchQuery) {
     try {
-        const data = await fetchArxivData(keywords);
+        const data = await fetchArxivData(query);
         const parser = new XMLParser();
         const jsonData = parser.parse(data);
         const entries = jsonData.feed.entry || [];
         return entries;
-
     } catch (error) {
         console.error('Error fetching or parsing data:', error);
-        return [];
+        throw error;
     }
 }
+
+
+
 
 // zod schema
 const FormSchema = z.object({
@@ -129,3 +132,31 @@ export const deleteKeyword = async (keywordId: number) => {
     });
     revalidatePath('/');
 };
+
+/** sortByを変更 */
+export async function updateSortBy(userId: number, sortBy: string) {
+    await prisma.user.update({
+        where: {
+            id: userId,
+        },
+        data: {
+            sortBy: sortBy,
+        },
+    });
+    console.log('sortBy: ', sortBy);
+    revalidatePath(`/dashboard/${userId}`);
+}
+
+/** sortOrderを変更 */
+export async function updateSortOrder(userId: number, sortOrder: string) {
+    await prisma.user.update({
+        where: {
+            id: userId,
+        },
+        data: {
+            sortOrder: sortOrder,
+        },
+    });
+    console.log('sortOrder: ', sortOrder);
+    revalidatePath(`/dashboard/${userId}`);
+}
