@@ -3,6 +3,7 @@ import DeleteButton from '@/components/dashboard/delete-button';
 import EditButton from '@/components/dashboard/edit-button';
 import AddKeywordForm from '@/components/dashboard/add-keyword-form';
 import SortSelector from '@/components/dashboard/sort-selector';
+import MaxResultsSelector from '@/components/dashboard/max-results-selector';
 import searchResult from '@/components/dashboard/searchResult';
 import { SearchQuery } from '@/lib/search-query';
 
@@ -21,6 +22,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         keywords: user.keywords.map((keyword) => keyword.name),
         sortBy: user.sortBy,
         sortOrder: user.sortOrder,
+        maxResults: user.maxResults,
     });
 
 
@@ -42,6 +44,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                 </div>
                 <AddKeywordForm userId={userId} />
                 <SortSelector userId={userId} initialSortBy={user.sortBy} initialSortOrder={user.sortOrder} />
+                <MaxResultsSelector userId={userId} initialMaxResults={user.maxResults} />
 
             </div>
 

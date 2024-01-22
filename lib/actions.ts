@@ -160,3 +160,23 @@ export async function updateSortOrder(userId: number, sortOrder: string) {
     console.log('sortOrder: ', sortOrder);
     revalidatePath(`/dashboard/${userId}`);
 }
+
+
+/** maxResultsを変更 */
+export const updateMaxResults = async (userId: number, maxResults: number) => {
+    try {
+        // Prisma の型である IntFieldUpdateOperationsInput を使ってデータを更新
+        await prisma.user.update({
+            where: { id: userId },
+            data: { maxResults: maxResults },
+        });
+
+        // 成功した場合の処理（例: メッセージをログに出力）
+        console.log(`Successfully updated maxResults for user ${userId} to ${maxResults}`);
+        revalidatePath(`/dashboard/${userId}`);
+    } catch (error) {
+        // エラーが発生した場合の処理
+        console.error('Error updating maxResults:', error);
+        throw error; // 例外を再スローするか、適切な処理を行う
+    }
+};
