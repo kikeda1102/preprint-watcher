@@ -27,21 +27,23 @@ export default async function Page({ params }: { params: { id: string } }) {
     return (
         <main className="my-8 mx-auto max-w-2xl">
             <div className="text-3xl font-bold mb-4 ml-2">{user.name} &#39;s dashboard</div>
-            <div className="flex flex-wrap items-start mb-4 ml-2">
-                <span className="text-lg font-semibold mr-3 mt-3">Keywords:</span>
-                {user.keywords.map((keyword) => (
-                    <div key={keyword.id} className="flex items-center bg-gray-100 p-2 rounded mb-2 mr-2">
-                        <span className="text-base font-semibold">{keyword.name}</span>
-                        <div className="flex space-x-2 ml-2">
-                            <EditButton keywordId={keyword.id} currentKeyword={keyword.name} />
-                            <DeleteButton keywordName={keyword.name} keywordId={keyword.id} />
+            <div className="border border-gray-300 rounded bg-gray-100 p-8 m-5">
+                <div className="flex flex-wrap items-start mb-4 ml-2">
+                    <span className="text-lg font-semibold mr-3 mt-3">Keywords:</span>
+                    {user.keywords.map((keyword) => (
+                        <div key={keyword.id} className="flex items-center bg-gray-200 p-2 rounded mb-2 mr-2">
+                            <span className="text-base font-semibold">{keyword.name}</span>
+                            <div className="flex space-x-2 ml-2">
+                                <EditButton keywordId={keyword.id} currentKeyword={keyword.name} />
+                                <DeleteButton keywordName={keyword.name} keywordId={keyword.id} />
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+                <AddKeywordForm userId={userId} />
+                <SortSelector userId={userId} initialSortBy={user.sortBy} initialSortOrder={user.sortOrder} />
 
-            <AddKeywordForm userId={userId} />
-            <SortSelector userId={userId} initialSortBy={user.sortBy} initialSortOrder={user.sortOrder} />
+            </div>
 
             {await searchResult(searchQuery)}
 

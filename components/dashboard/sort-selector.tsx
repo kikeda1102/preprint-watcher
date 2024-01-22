@@ -26,7 +26,7 @@ export default function SortSelector({ userId, initialSortBy, initialSortOrder }
     };
 
     return (
-        <div className="flex flex-col items-start space-y-4">
+        <div className="flex flex-col items-start space-y-4 mt-5">
             <div className="flex items-center space-x-4">
                 <label className="font-bold">Sort by:</label>
                 <div className="flex items-center space-x-2">
